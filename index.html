@@ -19,78 +19,39 @@
         <script type="text/javascript" src="apiGateway-js-sdk/index.js"></script>
     </head>
     <center>
-        <header class="photos_title">
-            Photos Library
+        <header class="title">
+            Photo Album Application
         </header>
     </center>
     <body>
-		<!--
-        <h2>JavaScript Speech to Text</h2>
-        <p>Click on the below button and speak something...</p>
-        <p><button type="button" onclick="runSpeechRecognition()">Speech to Text</button> &nbsp; <span id="action"></span></p>
-        <div id="output" class="hide"></div>
-        <script>
-		    function runSpeechRecognition() {
-		        // get output div reference
-		        var output = document.getElementById("output");
-		        // get action element reference
-		        var action = document.getElementById("action");
-                // new speech recognition object
-                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-                var recognition = new SpeechRecognition();
-                
-                console.log(recognition);
-                // This runs when the speech recognition service starts
-                recognition.onstart = function() {
-                    console.log("In start");
-                    action.innerHTML = "<small>listening, please speak...</small>";
-                };
-                
-                recognition.onspeechend = function() {
-                    console.log("In end");
-                    action.innerHTML = "<small>stopped listening, hope you are done...</small>";
-                    recognition.stop();
-                }
-              
-                // This runs when the speech recognition service returns result
-                recognition.onresult = function(event) {
-                    var transcript = event.results[0][0].transcript;
-                    var confidence = event.results[0][0].confidence;
-                    output.innerHTML = "<b>Text:</b> " + transcript + "<br/> <b>Confidence:</b> " + confidence*100+"%";
-                    output.classList.remove("hide");
-                };
-              
-                 // start recognition
-                 recognition.start();
-	        }
-        </script>
-        -->
         <div class="container-fluid">
             <center>
-                <form action="", method="get", target="", id="search_photos">
-                    <input name="search_query" id = "search_query" type="text" placeholder="Search Photos Library" autocomplete="off" autofocus>
-                    <button type="button">
-                        <i class="large material-icons" id="mic_search" onclick="voiceSearch()">mic</i>
-                    </button>
-                </form>
-                <p class="search_info">Click the microphone to start recording.</p>
                 <div class="row">
-                    <button type="button" id="searchPhotos" name="searchPhotos" style="width:100px; height: 25px;" onclick="textSearch()">Search</button>
+                    <form action="", method="get", target="", id="searchform">
+                        <input name="searchterm" id="searchterm" type="text" placeholder="Type or Click on the microphone to search the album" autocomplete="off" autofocus>
+                        <button type="button" id="micbutton">
+                            <i class="large material-icons" id="mic_search" onclick="speechRecognize()">mic</i>
+                        </button>
+                        <button type="button" id="searchbutton" name="searchbutton" onclick="textSearch()">Search</button>
+                    </form>
                 </div>
             </center>
         </div>
-        <div class="row">
-            <div id="photos_search_results">
+        <center>
+            <div id="photos-results-list" class="row">
             </div>
-        </div>
+        </center>
         <div class="Upload_files">
-            <h2 style="text-align: center;">Upload Photos</h2>
+            <h2 style="text-align: center; margin-bottom: 10px;">Upload Photos</h2>
             <center>
+                <p style="margin-bottom: 30px">You can upload an image of type png/jpg/jpeg. Optionally, enter a custom label.</p>
                 <form action="/action_page.php">
-                    <input type="file" id="uploaded_file" name="filename">
-                    <input type="text" id="custom_labels" name="custom_labels" placeholder="Custom labels">
+                    <input type="file" id="uploadedfile" name="filename">
+                    <input type="text" id="customlabels" name="customlabels" placeholder="Custom Label">
                 </form>
-                <button id="upload_files" onclick="uploadPhoto()">Upload</button>
+                <button id="uploadbutton" onclick="uploadPhoto()">Upload</button>
+                <div id="upload-message">
+                </div>
             </center>
         </div>
     </body>

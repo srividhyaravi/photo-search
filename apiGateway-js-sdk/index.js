@@ -1,150 +1,82 @@
-
-
-var apigClient = apigClientFactory.newClient();
+var apigClient = apigClientFactory.newClient({apiKey: "aABGiAiHfW5sYOpOejBFQCtOnhWJ1iw3oTQrgpi0"});
 window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
 
-function voiceSearch(){
-    if ('SpeechRecognition' in window) {
-        console.log("SpeechRecognition is Working");
-    } else {
-        console.log("SpeechRecognition is Not Working");
+function textSearch() {
+    var searchboxtext = document.getElementById('searchterm');
+    if (!searchboxtext.value) {
+        alert('Please enter some text or voice input');
+    } 
+    else {
+        searchboxtext = searchboxtext.value.trim().toLowerCase();
+        searchPhotos(searchboxtext);
     }
-    
-    var inputSearchQuery = document.getElementById("search_query");
+}
+
+function speechRecognize() {    
+    var searchboxtext = document.getElementById("searchterm");
     var recognition = new window.SpeechRecognition();
-
     recognition.onstart = function() {
-        console.log("In start");
-        inputSearchQuery.value = "Listening ...";
+        searchboxtext.value = "Listening ...";
     };
-
     recognition.onspeechend = function() {
-        console.log("In end");
         recognition.stop();
     }
-
     recognition.onresult = function(event) {
-        console.log("In result");
         var transcript = event.results[0][0].transcript;
-        inputSearchQuery.value = transcript;
+        searchboxtext.value = transcript;
         console.log("transcript : ", transcript)
     };
-
     recognition.start();
-
-    // micButton = document.getElementById("mic_search");
-    
-    // if (micButton.innerHTML == "mic") {
-    //     recognition.start();
-    // } else if (micButton.innerHTML == "mic_off"){
-    //     recognition.stop();
-    // }
-
-    // recognition.addEventListener("start", function() {
-        // micButton.innerHTML = "mic_off";
-        // console.log("Recording.....");
-    // });
-
-    // recognition.addEventListener("end", function() {
-        // console.log("Stopping recording.");
-        // micButton.innerHTML = "mic";
-    // });
-
-    // recognition.addEventListener("result", resultOfSpeechRecognition);
-    // function resultOfSpeechRecognition(event) {
-    //     const current = event.resultIndex;
-    //     transcript = event.results[current][0].transcript;
-    //     inputSearchQuery.value = transcript;
-    //     console.log("transcript : ", transcript)
-    // }
 }
 
-
-
-
-function textSearch() {
-    var searchText = document.getElementById('search_query');
-    if (!searchText.value) {
-        alert('Please enter a valid text or voice input!');
-    } else {
-        searchText = searchText.value.trim().toLowerCase();
-        console.log('Searching Photos....');
-        searchPhotos(searchText);
-    }
-    
-}
-
-function searchPhotos(searchText) {
-
-    console.log(searchText);
-    document.getElementById('search_query').value = searchText;
-    document.getElementById('photos_search_results').innerHTML = "<h4 style=\"text-align:center\">";
-
-    var params = {
-        'q' : searchText
-    };
-    
+function searchPhotos(searchboxtext) {
+    document.getElementById('upload-message').innerHTML = "";
+    document.getElementById('searchterm').value = searchboxtext;
+    var params = {'q' : searchboxtext, "x-api-key": "aABGiAiHfW5sYOpOejBFQCtOnhWJ1iw3oTQrgpi0"};
     console.log("Params: ", params);
     apigClient.searchGet(params)
         .then(function(result) {
-            console.log("Result data: ", result["data"]);
-
-            image_paths = result["data"]["imagePaths"];
-            console.log("image_paths : ", image_paths);
-
-            var photosDiv = document.getElementById("photos_search_results");
-            photosDiv.innerHTML = "";
-
-            var n;
-            for (n = 0; n < image_paths.length; n++) {
-                images_list = image_paths[n].split('/');
-                imageName = images_list[images_list.length - 1];
-
-                photosDiv.innerHTML += '<figure><img src="' + image_paths[n] + '" style="width:25%"><figcaption>' + imageName + '</figcaption></figure>';
+            var photosresults = document.getElementById("photos-results-list");
+            photosresults.innerHTML = "";
+            if (result["data"] == "No Results found") {
+                photosresults.innerHTML = "No Results Found!"
             }
-
+            else {
+                imgpaths = result["data"]["imagePaths"];
+                for (let i = 0; i < imgpaths.length; i++) {
+                    imglist = imgpaths[i].split('/');
+                    imgname = imglist[imglist.length - 1];
+                    let result = $("<div></div>").addClass("col-md-3")
+                    result.append('<figure><img src="' + imgpaths[i] + '" style="height:200px; width:250px;"><figcaption style="text-align:center;">' + imgname + '</figcaption></figure>')
+                    photosresults.innerHTML += result.html()
+                }
+            }
         }).catch(function(result) {
             console.log(result);
         });
 }
 
 function uploadPhoto() {
-    var filePath = (document.getElementById('uploaded_file').value).split("\\");
-    var fileName = filePath[filePath.length - 1];
-    var customLabels = "";
-    
-    if (!document.getElementById('custom_labels').innerText == "") {
-        customLabels = document.getElementById('custom_labels');
-    }
-    console.log(fileName);
-    console.log(custom_labels.value);
-
+    var fpath = (document.getElementById('uploadedfile').value).split("\\");
+    var fname = fpath[fpath.length - 1];
     var reader = new FileReader();
-    var file = document.getElementById('uploaded_file').files[0];
-    file.constructor = () => file;
-    console.log('File : ', file);
-    document.getElementById('uploaded_file').value = "";
-    // document.getElementById('custom_labels').value = "";
-    
-    if ((filePath == "") || (!['png', 'jpg', 'jpeg'].includes(fileName.split(".")[1]))) {
-        alert("Please upload a valid .png/.jpg/.jpeg file!");
-    } else {
-        var params = {'filename': fileName, 'bucket': 'b2-bucket-photoalbum', 'x-amz-meta-customLabels': custom_labels.value, 'Content-Type': file.type};
-        var additionalParams = {
-            headers: {
-                // 'Access-Control-Allow-Origin': '*',
-                'x-amz-meta-customLabels': custom_labels.value,
-                'Content-Type': file.type
-            }
-        };
-        
+    var file = document.getElementById('uploadedfile').files[0];
+
+    document.getElementById('uploadedfile').value = "";
+    document.getElementById('upload-message').innerHTML = "";
+
+    if ((fpath == "") || (!['png', 'jpg', 'jpeg'].includes(fname.split(".")[1]))) {
+        alert("Invalid file type! Please upload a png/jpg/jpeg file!");
+    }
+    else {
+        file.constructor = () => file;
+        var params = {'filename': fname, 'bucket': 'b2-bucket-photoalbum', 'x-amz-meta-customLabels': customlabels.value, 'Content-Type': file.type, "x-api-key": "aABGiAiHfW5sYOpOejBFQCtOnhWJ1iw3oTQrgpi0"};
+        var additionalparams = {headers: {'x-amz-meta-customLabels': customlabels.value, 'Content-Type': file.type}};
         reader.onload = function (event) {
-            console.log("Event: ", event)
-            body = btoa(event.target.result);
-            console.log('Reader body : ', body);
-            return apigClient.uploadBucketFilenamePut(params, file, additionalParams)
+            return apigClient.uploadBucketFilenamePut(params, file, additionalparams)
             .then(function(result) {
-                console.log(result);
+                document.getElementById('upload-message').innerHTML = "File uploaded successfully!";
+                document.getElementById('customlabels').value = "";
             })
             .catch(function(error) {
                 console.log(error);

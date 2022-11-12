@@ -1,110 +1,73 @@
-* {
-    margin: 10px;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.photos_title {
-    font-weight: bold;
-    font-size: 25px;
-}
-
 body {
-    font-family: 'Courier New', Courier, monospace;
-    color: white;
-    background-color: rgb(39, 37, 37);
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    padding-top: 2%;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .container-fluid {
     padding: 30px 50px;
-
 }
 
-.search_photos {
-    width: 575px;
-    margin: 0 auto;
+#searchform {
+    width: 55%;
     position: relative;
-    border-radius: 30px;
-
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-#search_photos {
-    width: 75%;
-    margin: 0 auto;
-    position: relative;
-}
-
-#search_photos input {
+#searchterm {
     width: 100%;
-    font-size: 1.5rem;
-    padding: 10px 15px;
-    border: 2px solid #ccc;
+    font-size: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    border: 2px solid black;
     border-radius: 2px;
 }
 
-#search_photos button {
+#searchbutton {
     position: absolute;
-    top: 0;
-    right: 0;
+    background-color: #1e80c7;
+    border: 2px solid black;
+    color: white;
+    top: 10px;
+    right: -20px;
     bottom: 0;
-    background-color: cornflowerblue;
-    outline: none;
-    border: none;
-    width: 3rem;
-    text-align: center;
-    font-size: 1.75rem;
-    cursor: pointer;
-    color: #333;
+    margin-bottom: 10px;
+    width: 100px;
+    font-size: 20px;
 }
 
-.search_info {
-    margin-top: 0.5rem;
-    text-align: center;
-    font-size: 0.75rem;
+#micbutton {
+    position: absolute;
+    background-color: #efc679;
+    border: 2px solid black;
+    color: darkgreen;
+    top: 10px;
+    right: 79px;
+    bottom: 0;
+    margin-bottom: 10px;
+    padding-top: 5px;
+    width: 45px;
+    font-size: 20px;
 }
 
-
-
-
-@media (max-width: 1200px) {
-    #search_photos {
-        width: 50%;
-    }
-}
-
-@media (max-width: 768px) {
-    .container-fluid {
-        padding: 30px 35px;
-    }
-
-    #search_photos {
-        width: 100%;
-    }
-
-    .info {
-        font-size: 0.5rem;
-    }
-}
-
-
-/* button {
-    padding:10px;
-    background-color:#6a67ce;
-    color: #FFFFFF;
-    border: 0px;
-    cursor:pointer;
+#uploadbutton {
+    margin-top: 20px;
+    width: 100px;
+    height: 35px;
+    font-size: 18px;
+    background-color: #1e80c7;
+    color: white;
+    border: 2px solid grey;
     border-radius: 5px;
 }
-#output {
-    background-color:#F9F9F9;
-    padding:10px;
-    width: 100%;
-    margin-top:20px;
-    line-height:30px;
+
+figure {
+    display: inline-block;
+    align-items: center;
 }
-.hide {
-    display:none;
-}
-.show {
-    display:block;
-} */
