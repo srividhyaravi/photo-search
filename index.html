@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="index.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
         <script type="text/javascript" src="apiGateway-js-sdk/lib/axios/dist/axios.standalone.js"></script>
         <script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/rollups/hmac-sha256.js"></script>
         <script type="text/javascript" src="apiGateway-js-sdk/lib/CryptoJS/rollups/sha256.js"></script>
@@ -16,43 +17,40 @@
         <script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/simpleHttpClient.js"></script>
         <script type="text/javascript" src="apiGateway-js-sdk/lib/apiGatewayCore/utils.js"></script>
         <script type="text/javascript" src="apiGateway-js-sdk/apigClient.js"></script>
-        <script type="text/javascript" src="apiGateway-js-sdk/index.js"></script>
+
+        <script src="apiGateway-js-sdk/index.js"></script>
     </head>
     <center>
-        <header class="title">
-            Photo Album Application
+        <header class="photos_title">
+            Smart Photo Album
         </header>
     </center>
     <body>
         <div class="container-fluid">
             <center>
+                <form action="", method="get", target="", id="search_photos">
+                    <input name="search_query" id = "search_query" type="text" placeholder="Search Photos Library" autocomplete="off" autofocus>
+                    <button type="button">
+                        <i class="large material-icons" id="mic_search" onclick="voiceSearch()">mic</i>
+                    </button>
+                </form>
+                <p class="search_info">Click the microphone to start or stop recording.</p>
                 <div class="row">
-                    <form action="", method="get", target="", id="searchform">
-                        <input name="searchterm" id="searchterm" type="text" placeholder="Type or Click on the microphone to search the album" autocomplete="off" autofocus>
-                        <button type="button" id="micbutton">
-                            <i class="large material-icons" id="mic_search" onclick="speechRecognize()">mic</i>
-                        </button>
-                        <button type="button" id="searchbutton" name="searchbutton" onclick="textSearch()">Search</button>
-                    </form>
+                    <button type="button" id="searchPhotos" name="searchPhotos" style="width:100px; height: 25px;" onclick="textSearch()">Search</button>
                 </div>
             </center>
         </div>
-        <center>
-            <div id="photos-results-list" class="row">
-            </div>
-        </center>
+        <div id="photos_search_results"></div>
         <div class="Upload_files">
-            <h2 style="text-align: center; margin-bottom: 10px;">Upload Photos</h2>
+            <h2 style="text-align: center;">Upload Photos</h2>
             <center>
-                <p style="margin-bottom: 30px">You can upload an image of type png/jpg/jpeg. Optionally, enter a custom label.</p>
                 <form action="/action_page.php">
-                    <input type="file" id="uploadedfile" name="filename">
-                    <input type="text" id="customlabels" name="customlabels" placeholder="Custom Label">
+                    <input type="file" id="uploaded_file" name="filename">
+                    <input type="text" id="custom_labels" name="custom_labels" placeholder="Custom labels">
                 </form>
-                <button id="uploadbutton" onclick="uploadPhoto()">Upload</button>
-                <div id="upload-message">
-                </div>
+                <button id="upload_files" onclick="uploadPhoto()">Upload</button>
             </center>
+            <center><p id="uploadText" style="display:hidden; font-size: 20px;"></p></center>
         </div>
     </body>
 </html>
